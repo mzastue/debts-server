@@ -1,18 +1,16 @@
-export const typeDef = `
+import gql from 'graphql-tag';
+import User from './../db/user';
+
+export const typeDef = gql`
   type Query {
-    User: User
+    User(id: String!): User
   }
 `;
 
 export const resolver = {
   Query: {
-    User: () => {
-      return {
-        id: 'asdojbasdoubasd',
-        name: 'Jon',
-        surname: 'Doe',
-        allDebts: [{id:1}]
-      }
+    User: (root, { id }) => {
+      return User.findById(id);
     },
   }
 };
