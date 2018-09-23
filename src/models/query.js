@@ -1,5 +1,19 @@
 export const typeDef = `
   type Query {
-    _empty: String
+    User: User
   }
 `;
+
+export const resolver = {
+  Query: {
+    User: () => {
+      return {
+        id: 'asdojbasdoubasd',
+        name: 'Jon',
+        surname: 'Doe',
+        allDebts: [{id:1}]
+      }
+    },
+  }
+};
+
