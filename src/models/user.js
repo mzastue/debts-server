@@ -1,20 +1,20 @@
 import gql from 'graphql-tag';
+import User from './../db/user';
 
 export const typeDef = gql`
-  type User {
-    id: String
-    name: String
-    surname: String
-    allDebts: [Debt]
-  }
+    type User {
+        id: String
+        name: String
+        surname: String
+        allDebts: [Debt]
+    }
 `;
 
 export const resolver = {
   User: {
-    allDebts: () => {
-      return [
-        { id: 'aiusdbasid', amount: 12 },
-      ]
+    allDebts: (root, args) => {
+      return User.findById(root.id)
+        .then(user => user.debts);
     },
   }
 };

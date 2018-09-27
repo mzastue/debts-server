@@ -1,6 +1,8 @@
 import mongoose from './../config/db';
 
-export  default mongoose.model(
+import Debt from './debt';
+
+export default mongoose.model(
   'User',
   mongoose.Schema({
     name: {
@@ -11,5 +13,6 @@ export  default mongoose.model(
       type: String,
       required: true,
     },
+    debts: [Debt.schema],
   })
 );
