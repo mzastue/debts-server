@@ -8,23 +8,27 @@ export const typeDef = gql`
         surname: String
         allDebts: [Debt]
         allLenders: [User]
+        Debt(id: String): Debt
     }
 `;
 
 export const resolver = {
   User: {
-    allDebts: (root) => {
-      return User.findById(root.id)
-        .then(user => user.debts);
+    allDebts: async root => {
+      const user = await User.getById(root.id);
+      return user.debts;
     },
 
     allLenders: async (root) => {
-      const lenderIds = await User.findById(root.id)
-        .then(user => {
-          return JSON.parse(JSON.stringify(user.debts)).map(d => d.lenderId);
-        });
-      const uniqueLendersIds = Array.from(new Set(lenderIds));
-      return uniqueLendersIds.map(lenderId => User.findById(lenderId));
+      const user = await User.getById(root.id);
+      return user.hasDebts()
+        ? user.getLenders()
+        : [];
+    },
+
+    Debt: async (root, { id }) => {
+      const user = await User.getById(root.id);
+      return user.getDebt(id);
     }
-  }
+  },
 };

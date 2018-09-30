@@ -1,5 +1,4 @@
 import mongoose from './../config/db';
-import User from './user';
 
 export default mongoose.model(
   'Debt',
